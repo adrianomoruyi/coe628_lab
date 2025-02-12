@@ -9,7 +9,7 @@
 int main()
 {
     char input[MAX_INPUT];
-    printf("Enter your command");
+    printf("Enter your command> ");
 
     // Reading input with fgets and returning an error if fgets fails
     if (fgets(input, MAX_INPUT, stdin) == NULL)
@@ -22,10 +22,10 @@ int main()
     input[strcspn(input, "\n")] = 0;
 
     char *command1 = strtok(input, "|");
-    char *command1 = strtok(NULL, "|");
+    char *command2 = strtok(NULL, "|");
 
     // Error if no pipe is found and the input isnt tokenized.
-    if (command1 == NULL || command2 = NULL)
+    if (command1 == NULL || command2 == NULL)
     {
         fprintf(stderr, "Error: Commnd must contain a pipe ( | )\n");
         return EXIT_FAILURE;
@@ -62,8 +62,8 @@ int main()
         dup2(pipefd[1], STDOUT_FILENO);
         close(pipefd[1]);
 
-        execlp("bin/sh", "sh", "-c", command1, NULL);
-        perror("execlp failed");
+        execlp("/bin/sh", "sh", "-c", command1, NULL);
+        perror("execlp failed!");
         exit(EXIT_FAILURE);
     }
 
@@ -77,11 +77,11 @@ int main()
     if (pid2 == 0)
     {
         close(pipefd[1]);
-        dup2(pipefd[0], STDOUT_FILENO);
+        dup2(pipefd[0], STDIN_FILENO);
         close(pipefd[0]);
 
-        execlp("bin/sh", "sh", "-c", command2, NULL);
-        perror("execlp failed");
+        execlp("/bin/sh", "sh", "-c", command2, NULL);
+        perror("execlp failed!");
         exit(EXIT_FAILURE);
     }
 
