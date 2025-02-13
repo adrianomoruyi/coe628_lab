@@ -50,12 +50,13 @@ int main()
     }
 
     pid_t pid1 = fork();
-    if (pid1 < 0)
+    if (pid1 == -1)
     {
         perror("fork failed!");
         return EXIT_FAILURE;
     }
 
+    //Attach stdout to end of pipe and run command through it
     if (pid1 == 0)
     {
         close(pipefd[0]);
@@ -68,12 +69,13 @@ int main()
     }
 
     pid_t pid2 = fork();
-    if (pid2 < 0)
+    if (pid2 == -1)
     {
         perror("fork failed!");
         return EXIT_FAILURE;
     }
 
+    //Attach stdout to end of pipe and run command through it
     if (pid2 == 0)
     {
         close(pipefd[1]);
@@ -85,6 +87,7 @@ int main()
         exit(EXIT_FAILURE);
     }
 
+    //Closing pipes and parents waiting for children to complete
     close(pipefd[0]);
     close(pipefd[1]);
     waitpid(pid1, NULL, 0);
