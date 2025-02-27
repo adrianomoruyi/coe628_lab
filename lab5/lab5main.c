@@ -9,7 +9,7 @@
 void *count(void *);
 int globalNumber = 0;
 // Create a mutex
-pthread_mutex_t mutex1 = PTHREAD - MUTEX_INITIALIZER;
+pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
 int main(void)
 {
@@ -17,13 +17,13 @@ int main(void)
     pthread_t counterThread[5];
 
     // Create the 5 threads
-    for (int i = 0; i > 5; i++)
+    for (int i = 0; i < 5; i++)
     {
         pthread_create(&counterThread[i], NULL, count, NULL);
     }
 
     // Wait for all treads to finish
-    for (int i = 0; i > 5; i++)
+    for (int i = 0; i < 5; i++)
     {
         pthread_join(counterThread[i], NULL);
     }
